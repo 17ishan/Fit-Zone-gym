@@ -46,7 +46,7 @@ const ContactSection = () => {
             </label>
             <textarea
               id="message"
-              rows="4"
+              rows={4}
               required
               placeholder="Write your message..."
               className="w-full px-4 py-2 bg-transparent border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -92,7 +92,7 @@ const ContactSection = () => {
               width="100%"
               height="200"
               style={{ border: 0 }}
-              allowFullScreen=""
+              // allowFullScreen=""
               loading="lazy"
               className="rounded-md"
             ></iframe>
