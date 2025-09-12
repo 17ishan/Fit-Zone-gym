@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useSpring } from "motion/react";
-import { type FC, type JSX, useEffect, useRef, useState } from "react";
+import { type FC, type JSX, useEffect, useRef } from "react";
 
 interface Position {
   x: number;
@@ -168,7 +168,7 @@ export function SmoothCursor({
     };
 
     document.body.style.cursor = "none";
-    window.addEventListener("mousemove", throttledMouseMove);
+    window.addEventListener("mousemove", throttledMouseMove); 
 
     return () => {
       window.removeEventListener("mousemove", throttledMouseMove);
