@@ -16,7 +16,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="w-full fixed top-0 left-0 z-50 ">
+    <header className="w-full fixed top-0 left-0 z-50">
       <div className="flex items-center justify-between px-6 py-4  backdrop-blur-3xl">
         {/* Logo */}
         <h1 className="text-2xl font-extrabold text-blue-500 tracking-wide">
@@ -34,7 +34,7 @@ const Navbar = () => {
         </button>
 
         {/* Desktop Nav — fixed & aligned right */}
-        <div className="hidden md:flex justify-end items-center flex-1 text-gray-200 ">
+        <div className="hidden md:flex justify-end items-center flex-1 text-gray-200  ">
           <GooeyNav
             items={items}
             particleCount={150}
