@@ -16,7 +16,7 @@ const HeroSection = () => {
         /> */}
 
         <video
-          src="src/assets/vid1.mp4"
+          src="vid1.mp4"
           className="w-full h-full object-cover"
           autoPlay
           loop
