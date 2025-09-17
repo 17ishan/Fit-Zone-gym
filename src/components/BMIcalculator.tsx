@@ -16,29 +16,45 @@ const BMICalculator = () => {
     setBmi(bmiValue);
 
     if (bmiValue < 18.5) setCategory("🏋️ Underweight – Time to Bulk Up!");
-    else if (bmiValue >= 18.5 && bmiValue < 24.9) setCategory("💪 Normal – Keep it up!");
-    else if (bmiValue >= 25 && bmiValue < 29.9) setCategory("⚡ Overweight – Time to Cut!");
+    else if (bmiValue >= 18.5 && bmiValue < 24.9)
+      setCategory("💪 Normal – Keep it up!");
+    else if (bmiValue >= 25 && bmiValue < 29.9)
+      setCategory("⚡ Overweight – Time to Cut!");
     else setCategory("🔥 Obese – Let’s Smash Those Goals!");
   };
 
+  const getProgressColor = () => {
+    if (!bmi) return "";
+    if (bmi < 18.5) return "bg-[#414141]";
+    if (bmi < 24.9) return "bg-[#00FF7F]"; // green for normal
+    if (bmi < 29.9) return "bg-[#FFD700]"; // yellow for overweight
+    return "bg-[#FF0000]"; // red for obese
+  };
+
+  const getProgressWidth = () => {
+    if (!bmi) return "w-0";
+    if (bmi < 18.5) return "w-1/5";
+    if (bmi < 24.9) return "w-2/5";
+    if (bmi < 29.9) return "w-3/5";
+    return "w-4/5";
+  };
+
   return (
-    <div className="bg-black text-white py-16 px-6 flex justify-center items-center">
+    <div className="bg-black text-white py-20 px-6 flex justify-center items-center">
       <div className="w-full max-w-lg relative rounded-3xl overflow-hidden">
-        
         {/* Neon Glow Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-700/40 via-indigo-600/30 to-purple-700/40 blur-3xl animate-pulse" />
-        
-        <div className="relative z-10 bg-gray-900/80 backdrop-blur-md border border-gray-700 rounded-3xl shadow-[0_0_25px_rgba(59,130,246,0.5)] p-8">
-          
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FF0000]/40 via-[#AF0404]/30 to-[#414141]/30 blur-3xl animate-pulse" />
+
+        <div className="relative z-10 bg-[#252525]/90 backdrop-blur-md border border-[#414141] rounded-3xl shadow-[0_0_25px_rgba(255,0,0,0.25)] p-10 transition-transform duration-500 hover:scale-[1.02]">
           {/* Title */}
-          <h2 className="text-4xl font-extrabold text-center mb-8 bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500 bg-clip-text text-transparent tracking-widest uppercase">
+          <h2 className="text-4xl font-extrabold text-center mb-10 bg-gradient-to-r from-[#FF0000] via-[#AF0404] to-[#414141] bg-clip-text text-transparent tracking-widest uppercase">
             BMI Calculator
           </h2>
 
           {/* Inputs */}
           <div className="space-y-6">
             <div>
-              <label className="block mb-2 text-gray-300 text-sm font-semibold">
+              <label className="block mb-2 text-[#FF0000] text-sm font-semibold">
                 Weight (kg)
               </label>
               <input
@@ -46,12 +62,12 @@ const BMICalculator = () => {
                 value={weight}
                 onChange={(e) => setWeight(Number(e.target.value))}
                 placeholder="Enter your weight"
-                className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 border border-gray-600 focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full p-3 rounded-lg bg-[#1c1c1c] text-white placeholder-[#414141] border border-[#414141] focus:ring-2 focus:ring-[#FF0000] outline-none transition-all"
               />
             </div>
 
             <div>
-              <label className="block mb-2 text-gray-300 text-sm font-semibold">
+              <label className="block mb-2 text-[#FF0000] text-sm font-semibold">
                 Height (cm)
               </label>
               <input
@@ -59,7 +75,7 @@ const BMICalculator = () => {
                 value={height}
                 onChange={(e) => setHeight(Number(e.target.value))}
                 placeholder="Enter your height"
-                className="w-full p-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 border border-gray-600 focus:ring-2 focus:ring-purple-500 outline-none"
+                className="w-full p-3 rounded-lg bg-[#1c1c1c] text-white placeholder-[#414141] border border-[#414141] focus:ring-2 focus:ring-[#AF0404] outline-none transition-all"
               />
             </div>
           </div>
@@ -67,40 +83,32 @@ const BMICalculator = () => {
           {/* Button */}
           <button
             onClick={calculateBMI}
-            className="w-full mt-8 relative group overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 py-3 rounded-lg font-bold tracking-wide text-lg shadow-lg shadow-blue-500/30"
+            className="w-full mt-10 relative group overflow-hidden bg-[#FF0000] py-3 rounded-lg font-bold tracking-wide text-lg  transition-all duration-500"
           >
-            <span className="relative z-10 text-white group-hover:text-yellow-300 transition-colors">
+            <span className="relative z-10 text-white ">
               Calculate BMI
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-[#FF0000] opacity-0 hover:bg-[#AF0404] transition-opacity duration-500 cursor-pointer" />
           </button>
 
           {/* Result */}
           {bmi && (
-            <div className="mt-10 text-center">
+            <div className="mt-12 text-center">
               <p className="text-2xl font-bold mb-2">
                 Your BMI:{" "}
-                <span className="text-cyan-400 drop-shadow-lg">{bmi}</span>
+                <span className="text-[#FF0000] drop-shadow-lg">{bmi}</span>
               </p>
               <p className="text-lg font-medium text-gray-300">{category}</p>
 
               {/* Progress bar for BMI Range */}
-              <div className="w-full bg-gray-800 rounded-full h-3 mt-6 overflow-hidden">
+              <div className="w-full bg-[#1c1c1c] rounded-full h-4 mt-6 overflow-hidden border border-[#414141]">
                 <div
-                  className={`h-3 rounded-full transition-all duration-700 ease-out ${
-                    bmi < 18.5
-                      ? "bg-yellow-400 w-1/5"
-                      : bmi < 24.9
-                      ? "bg-green-500 w-2/5"
-                      : bmi < 29.9
-                      ? "bg-orange-500 w-3/5"
-                      : "bg-red-600 w-4/5"
-                  }`}
+                  className={`h-4 rounded-full transition-all duration-700 ease-out ${getProgressColor()} ${getProgressWidth()}`}
                 ></div>
               </div>
 
               {/* Labels */}
-              <div className="flex justify-between text-xs text-gray-400 mt-3">
+              <div className="flex justify-between text-xs text-gray-400 mt-3 font-semibold">
                 <span>Underweight</span>
                 <span>Normal</span>
                 <span>Overweight</span>

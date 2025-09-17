@@ -5,15 +5,15 @@ const ContactSection = () => {
   return (
     <section className="relative w-full min-h-screen bg-black text-white px-6 py-24 flex flex-col items-center justify-center">
       <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 tracking-tight">
-        Get in <span className="text-blue-500">Touch</span>
+        Get in <span className="text-[#FF0000]">Touch</span>
       </h2>
-      <p className="text-lg text-gray-300 max-w-2xl text-center mb-12">
+      <p className="text-lg  max-w-2xl text-center mb-12">
         Whether you have questions about memberships, want to schedule a trial session, or just want to connect — we’re here to help.
       </p>
 
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Contact Form */}
-        <form className="space-y-6 bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10">
+        <form className="space-y-6 bg-[#414141]/10 backdrop-blur-sm p-8 rounded-2xl border border-[#414141]">
           <div>
             <label htmlFor="name" className="block mb-1 text-sm font-medium">
               Your Name
@@ -23,7 +23,7 @@ const ContactSection = () => {
               id="name"
               required
               placeholder="Enter your name"
-              className="w-full px-4 py-2 bg-transparent border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-transparent border border-[#414141] rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF0000]"
             />
           </div>
 
@@ -36,7 +36,7 @@ const ContactSection = () => {
               id="email"
               required
               placeholder="Enter your email"
-              className="w-full px-4 py-2 bg-transparent border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-transparent border border-[#414141] rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF0000]"
             />
           </div>
 
@@ -49,39 +49,39 @@ const ContactSection = () => {
               rows={4}
               required
               placeholder="Write your message..."
-              className="w-full px-4 py-2 bg-transparent border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-transparent border border-[#414141] rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF0000]"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 transition text-white font-semibold py-2 px-4 rounded-md"
+            className="w-full bg-[#AF0404] hover:bg-[#FF0000] transition text-white font-semibold py-2 px-4 rounded-md"
           >
             Send Message
           </button>
         </form>
 
         {/* Contact Information */}
-        <div className="space-y-6 bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10">
+        <div className="space-y-6 bg-[#414141]/10 backdrop-blur-sm p-8 rounded-2xl border border-[#414141]">
           <div className="flex items-start gap-4">
-            <Phone className="text-blue-500 mt-1" />
+            <Phone className="text-[#FF0000] mt-1" />
             <div>
               <h4 className="font-semibold">Phone</h4>
-              <p className="text-gray-300 text-sm">+91 98765 43210</p>
+              <p className="text-[#414141] text-sm">+91 98765 43210</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
-            <Mail className="text-blue-500 mt-1" />
+            <Mail className="text-[#FF0000] mt-1" />
             <div>
               <h4 className="font-semibold">Email</h4>
-              <p className="text-gray-300 text-sm">contact@fitzonegym.com</p>
+              <p className="text-[#414141] text-sm">contact@fitzonegym.com</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
-            <MapPin className="text-blue-500 mt-1" />
+            <MapPin className="text-[#FF0000] mt-1" />
             <div>
               <h4 className="font-semibold">Location</h4>
-              <p className="text-gray-300 text-sm">123 Fitness Street, Bhopal, MP</p>
+              <p className="text-[#414141] text-sm">123 Fitness Street, Bhopal, MP</p>
             </div>
           </div>
 
@@ -92,7 +92,6 @@ const ContactSection = () => {
               width="100%"
               height="200"
               style={{ border: 0 }}
-              // allowFullScreen=""
               loading="lazy"
               className="rounded-md"
             ></iframe>

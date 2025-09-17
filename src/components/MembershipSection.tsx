@@ -103,9 +103,9 @@ const MembershipSection = () => {
   return (
     <section className="relative w-full min-h-screen bg-black text-white px-4 md:px-6 py-24 flex flex-col items-center justify-center">
       <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 tracking-tight">
-        Choose Your <span className="text-blue-500">Membership</span>
+        Choose Your <span className="text-[#FF0000]">Membership</span>
       </h2>
-      <p className="text-base md:text-lg text-gray-300 max-w-2xl text-center mb-12 px-4">
+      <p className="text-base md:text-lg text-[#414141] max-w-2xl text-center mb-12 px-4">
         Pick the plan that best suits your goals and lifestyle. No hidden fees, cancel anytime.
       </p>
 
@@ -113,14 +113,14 @@ const MembershipSection = () => {
       <div className="relative w-full max-w-7xl">
         <button
           onClick={scrollLeft}
-          className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 z-20 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-colors duration-200"
+          className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 z-20 bg-[#FF0000] hover:bg-[#AF0404] text-white p-2 rounded-full shadow-lg transition-colors duration-200"
         >
           <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
         </button>
 
         <button
           onClick={scrollRight}
-          className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 z-20 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-colors duration-200"
+          className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 z-20 bg-[#FF0000] hover:bg-[#AF0404] text-white p-2 rounded-full shadow-lg transition-colors duration-200"
         >
           <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
         </button>
@@ -136,21 +136,21 @@ const MembershipSection = () => {
                 key={index}
                 className={`
                   flex-shrink-0
-                  w-44 sm:w-52 md:w-72 lg:w-80 overflow-y-hidden
+                  w-44 sm:w-52 md:w-72 lg:w-80 overflow-y-hidden 
                   relative flex flex-col items-center 
-                  bg-white/5 backdrop-blur-md 
+                  bg-[#414141]/24 backdrop-blur-md 
                   p-4 sm:p-6 md:p-8 
                   rounded-xl md:rounded-2xl 
                   border ${
                     plan.highlight
-                      ? "border-blue-500 shadow-lg shadow-blue-500/20"
-                      : "border-white/10"
+                      ? "border-[#FF0000] shadow-lg shadow-[#FF0000]/20"
+                      : "border-[#414141]/10"
                   } 
-                  transition-all duration-300 hover:scale-101 hover:border-blue-400 
+                  transition-all duration-300 hover:scale-101 hover:border-[#AF0404] 
                 `}
               >
                 {plan.highlight && (
-                  <div className="absolute -top-3  left-1/2 -translate-x-1/2 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                  <div className="absolute -top-3  left-1/2 -translate-x-1/2 bg-[#FF0000] text-white px-3 py-1 rounded-full text-xs font-semibold">
                     Popular
                   </div>
                 )}
@@ -158,20 +158,20 @@ const MembershipSection = () => {
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 text-center">
                   {plan.title}
                 </h3>
-                <p className="text-blue-400 text-xl sm:text-2xl md:text-3xl font-bold mb-4 md:mb-6">
+                <p className="text-[#FF0000] text-xl sm:text-2xl md:text-3xl font-bold mb-4 md:mb-6">
                   {plan.price}
                 </p>
 
-                <ul className="space-y-2 md:space-y-3 text-xs sm:text-sm text-gray-300 mb-6 md:mb-8 flex-grow">
+                <ul className="space-y-2 md:space-y-3 text-xs sm:text-sm  mb-6 md:mb-8 flex-grow">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="text-green-400 w-4 h-4 md:w-5 md:h-5 flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="text-[#FF0000] w-4 h-4 md:w-5 md:h-5 flex-shrink-0 mt-0.5" />
                       <span className="leading-tight">{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-lg transition-colors duration-300 text-sm md:text-base">
+                <button className="w-full bg-[#FF0000] hover:bg-[#AF0404] text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-lg transition-colors duration-300 text-sm md:text-base">
                   Join {plan.title}
                 </button>
               </div>

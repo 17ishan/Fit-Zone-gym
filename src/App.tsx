@@ -53,10 +53,6 @@ function App() {
       <HeroSection />
       </div>
 
-      {/* About Section */}
-      <div id='about'>
-      <AboutSection  />
-      </div>
 
       {/* Service Section */}
       <div id='service'>
@@ -67,6 +63,10 @@ function App() {
       <BMIcalculator/> 
       </div>
 
+      {/* About Section */}
+      <div id='about'>
+      <AboutSection  />
+      </div>
 
       {/* Membership Section */}
       <div id='membership'>

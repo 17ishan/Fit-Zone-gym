@@ -5,11 +5,11 @@ import GooeyNav from "./GooeyNav";
 // update with your own items
 const items = [
   { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
   { label: "Our Services", href: "#service" },
   { label: "Membership", href: "#membership" },
   { label: "Gallery", href: "#gallery" },
-  { label: "About", href: "#about" },
 ];
 
 const Navbar = () => {
@@ -17,15 +17,15 @@ const Navbar = () => {
 
   return (
     <header className="w-full fixed top-0 left-0 z-50">
-      <div className="flex items-center justify-between px-6 py-4  backdrop-blur-3xl">
+      <div className="flex items-center justify-between px-6 py-4  backdrop-blur-3xl bg-black">
         {/* Logo */}
-        <h1 className="text-2xl font-extrabold text-blue-500 tracking-wide">
-          <span className="text-gray-200">Fit</span>Zone
+        <h1 className="text-2xl font-extrabold tracking-wide">
+          <span className="text-[#414141]">Fit</span><span className="text-[#FF0000]">Zone</span>
         </h1>
 
         {/* Hamburger (mobile only) */}
         <button
-          className="md:hidden text-gray-200 focus:outline-none"
+          className="md:hidden text-[#AF0404] focus:outline-none"
           onClick={() => setIsOpen((s) => !s)}
           aria-expanded={isOpen}
           aria-label={isOpen ? "Close menu" : "Open menu"}
@@ -34,7 +34,7 @@ const Navbar = () => {
         </button>
 
         {/* Desktop Nav — fixed & aligned right */}
-        <div className="hidden md:flex justify-end items-center flex-1 text-gray-200  ">
+        <div className="hidden md:flex justify-end items-center flex-1 text-[#414141] ">
           <GooeyNav
             items={items}
             particleCount={150}
@@ -55,14 +55,14 @@ const Navbar = () => {
         }`}
         aria-hidden={!isOpen}
       >
-        <nav className="bg-black border-t border-gray-700">
+        <nav className="bg-[#252525] border-t border-[#414141]">
           <ul className="flex flex-col gap-2 px-4 py-4">
             {items.map((item, idx) => (
               <li key={idx}>
                 <a
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:text-blue-400 transition-colors"
+                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-[#FF0000] hover:text-[#AF0404] transition-colors"
                 >
                   {item.label}
                 </a>
@@ -76,4 +76,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
- 
