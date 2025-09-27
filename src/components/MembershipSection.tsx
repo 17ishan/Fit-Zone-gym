@@ -1,6 +1,6 @@
-// src/components/MembershipSection.jsx
-import { useRef } from "react";
-import { CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
+// src/components/MembershipSectionAlt.jsx
+import { useState } from "react";
+import { CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 
 const plans = [
   {
@@ -11,7 +11,6 @@ const plans = [
       "Locker room access",
       "1 Personal Trainer session",
     ],
-    highlight: false,
   },
   {
     title: "Standard",
@@ -22,7 +21,6 @@ const plans = [
       "Diet consultation",
       "4 PT sessions/month",
     ],
-    highlight: true,
   },
   {
     title: "Premium",
@@ -33,39 +31,6 @@ const plans = [
       "Massage & recovery zone",
       "Priority support",
     ],
-    highlight: false,
-  },
-  {
-    title: "Student Plan",
-    price: "₹599/mo",
-    features: [
-      "Access to gym floor (off-peak hours)",
-      "Locker room access",
-      "Discounted PT sessions",
-    ],
-    highlight: false,
-  },
-  {
-    title: "Family Pack",
-    price: "₹3,999/mo",
-    features: [
-      "Access for 3 family members",
-      "Group classes for all",
-      "Shared diet consultation",
-      "2 PT sessions per member",
-    ],
-    highlight: false,
-  },
-  {
-    title: "Corporate Wellness",
-    price: "₹6,999/mo",
-    features: [
-      "10 employee memberships",
-      "Dedicated fitness consultant",
-      "Weekly group fitness workshops",
-      "Monthly health reports",
-    ],
-    highlight: false,
   },
   {
     title: "Annual Elite",
@@ -77,121 +42,115 @@ const plans = [
       "Exclusive VIP events",
       "Dedicated nutritionist",
     ],
-    highlight: true,
   },
 ];
 
-const MembershipSection = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      // Scroll by card width + gap on mobile, larger amount on desktop
-      const scrollAmount = window.innerWidth < 768 ? 200 : 340;
-      scrollRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      // Scroll by card width + gap on mobile, larger amount on desktop
-      const scrollAmount = window.innerWidth < 768 ? 200 : 340;
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
-  };
+const MembershipSectionAlt = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="relative w-full min-h-screen bg-black text-white px-4 md:px-6 py-24 flex flex-col items-center justify-center">
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 tracking-tight">
-        Choose Your <span className="text-[#FF0000]">Membership</span>
-      </h2>
-      <p className="text-base md:text-lg text-[#414141] max-w-2xl text-center mb-12 px-4">
-        Pick the plan that best suits your goals and lifestyle. No hidden fees, cancel anytime.
-      </p>
+    <section className="w-full bg-black text-white py-20 px-4 md:px-10">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-center text-3xl md:text-5xl font-bold mb-6">
+          Compare Our <span className="text-[#FF0000]">Plans</span>
+        </h2>
+        <p className="text-center text-gray-400 max-w-2xl mx-auto mb-12">
+          Whether you’re just starting out or looking for premium perks, we have
+          a membership for you. Compare and choose what fits best.
+        </p>
 
-      {/* Scroll buttons */}
-      <div className="relative w-full max-w-7xl">
-        <button
-          onClick={scrollLeft}
-          className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 z-20 bg-[#FF0000] hover:bg-[#AF0404] text-white p-2 rounded-full shadow-lg transition-colors duration-200"
-        >
-          <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-        </button>
+        {/* Desktop Table */}
+        <div className="hidden md:grid grid-cols-5 gap-6 bg-[#111] rounded-xl overflow-hidden">
+          <div className="p-6 border-r border-gray-800">
+            <h3 className="font-semibold text-lg mb-4">Features</h3>
+            <ul className="space-y-3 text-gray-300">
+              <li>Gym Floor Access</li>
+              <li>Locker Room</li>
+              <li>Personal Trainer</li>
+              <li>Group Classes</li>
+              <li>Diet Consultation</li>
+              <li>Massage / Recovery</li>
+              <li>Priority Support</li>
+              <li>Exclusive Events</li>
+            </ul>
+          </div>
 
-        <button
-          onClick={scrollRight}
-          className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 z-20 bg-[#FF0000] hover:bg-[#AF0404] text-white p-2 rounded-full shadow-lg transition-colors duration-200"
-        >
-          <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-        </button>
-
-        {/* Scrollable container */}
-        <div
-          ref={scrollRef}
-          className="w-full overflow-x-scroll scroll-smooth scrollbar-hidden  "
-        >
-          <div className="flex gap-3 md:gap-6 lg:gap-20 px-8 md:px-10 border-black ">
-            {plans.map((plan, index) => (
-              <div
-                key={index}
-                className={`
-                  flex-shrink-0
-                  w-44 sm:w-52 md:w-72 lg:w-80 overflow-y-hidden 
-                  relative flex flex-col items-center 
-                  bg-[#414141]/24 backdrop-blur-md 
-                  p-4 sm:p-6 md:p-8 
-                  rounded-xl md:rounded-2xl 
-                  border ${
-                    plan.highlight
-                      ? "border-[#FF0000] shadow-lg shadow-[#FF0000]/20"
-                      : "border-[#414141]/10"
-                  } 
-                  transition-all duration-300 hover:scale-101 hover:border-[#AF0404] 
-                `}
-              >
-                {plan.highlight && (
-                  <div className="absolute -top-3  left-1/2 -translate-x-1/2 bg-[#FF0000] text-white px-3 py-1 rounded-full text-xs font-semibold">
-                    Popular
-                  </div>
-                )}
-
-                <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 text-center">
+          {plans.map((plan, idx) => (
+            <div
+              key={idx}
+              className={`p-6 flex flex-col justify-between ${
+                idx !== plans.length - 1 ? "border-r border-gray-800" : ""
+              }`}
+            >
+              <div>
+                <h3 className="text-xl font-bold mb-2 text-center">
                   {plan.title}
                 </h3>
-                <p className="text-[#FF0000] text-xl sm:text-2xl md:text-3xl font-bold mb-4 md:mb-6">
+                <p className="text-[#FF0000] text-2xl font-extrabold mb-6 text-center">
                   {plan.price}
                 </p>
-
-                <ul className="space-y-2 md:space-y-3 text-xs sm:text-sm  mb-6 md:mb-8 flex-grow">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="text-[#FF0000] w-4 h-4 md:w-5 md:h-5 flex-shrink-0 mt-0.5" />
-                      <span className="leading-tight">{feature}</span>
+                <ul className="space-y-3 text-sm text-gray-300">
+                  {plan.features.map((f, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <CheckCircle2 className="text-[#FF0000] w-5 h-5" />
+                      {f}
                     </li>
                   ))}
                 </ul>
-
-                <button className="w-full bg-[#FF0000] hover:bg-[#AF0404] text-white font-semibold py-2 md:py-3 px-4 md:px-6 rounded-lg transition-colors duration-300 text-sm md:text-base">
-                  Join {plan.title}
-                </button>
               </div>
-            ))}
-          </div>
+              <button className="mt-6 w-full bg-[#FF0000] hover:bg-[#AF0404] text-white py-2 rounded-lg transition">
+                Join {plan.title}
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile Accordion */}
+        <div className="md:hidden space-y-4">
+          {plans.map((plan, idx) => (
+            <div
+              key={idx}
+              className="bg-[#1a1a1a] rounded-lg p-4 border border-gray-800"
+            >
+              {/* Accordion Button */}
+              <button
+                className="w-full flex justify-between items-center"
+                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
+              >
+                <span className="font-semibold text-lg">{plan.title}</span>
+                {openIndex === idx ? (
+                  <ChevronUp className="w-5 h-5 text-[#FF0000]" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-[#FF0000]" />
+                )}
+              </button>
+              <p className="text-[#FF0000] font-bold mt-1">{plan.price}</p>
+
+              {/* Accordion Content with animation */}
+              <div
+                className={`transition-all duration-500 overflow-hidden ${
+                  openIndex === idx ? "max-h-96 mt-4" : "max-h-0"
+                }`}
+              >
+                <ul className="space-y-2 text-sm text-gray-300">
+                  {plan.features.map((f, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <CheckCircle2 className="text-[#FF0000] w-4 h-4" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <button className="mt-4 w-full bg-[#FF0000] hover:bg-[#AF0404] text-white py-2 rounded-lg transition">
+                Join {plan.title}
+              </button>
+            </div>
+          ))}
         </div>
       </div>
-
-      {/* Custom scrollbar hide styles */}
-      <style>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </section>
   );
 };
 
-export default MembershipSection;
+export default MembershipSectionAlt;
