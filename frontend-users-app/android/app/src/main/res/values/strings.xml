@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">FitZone</string>
+    <string name="title_activity_main">FitZone</string>
+    <string name="package_name">com.fitzone.app</string>
+    <string name="custom_url_scheme">com.fitzone.app</string>
+</resources>

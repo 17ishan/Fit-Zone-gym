@@ -1,0 +1,15 @@
+{
+  // Requires the "Extension Pack for Java" (vscjava). Run/Debug from the Run panel.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run Backend (GymApplication)",
+      "request": "launch",
+      "mainClass": "com.fitzone.gym.GymApplication",
+      "projectName": "gym-backend",
+      // spring-dotenv loads backend/.env from the working directory, so run from there.
+      "cwd": "${workspaceFolder}/backend"
+    }
+  ]
+}

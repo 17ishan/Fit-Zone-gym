@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Synced web build (generated from frontend-users/dist)
+www/
+
+# Android build outputs
+android/.gradle/
+android/build/
+android/app/build/
+android/capacitor-cordova-android-plugins/
+android/local.properties
+
+# iOS build outputs
+ios/App/Pods/
+ios/App/build/
+ios/App/Podfile.lock
+ios/App/output/
+
+# Misc
+*.log
+.DS_Store

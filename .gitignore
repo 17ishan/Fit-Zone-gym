@@ -1,0 +1,56 @@
+# ===== Dependencies =====
+node_modules/
+
+# ===== Secrets / environment (NEVER commit) =====
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+# Signing keystores / key material
+Root key/
+*.keystore
+*.jks
+*.p12
+*.keystore.properties
+
+# ===== Build outputs =====
+# Java / Maven
+target/
+# Vite / web
+dist/
+dist-ssr/
+*.local
+# Capacitor web layer (generated from the frontend-users build)
+frontend-users-app/www/
+# Android
+.gradle/
+build/
+local.properties
+*.apk
+*.aab
+captures/
+# iOS
+ios/App/Pods/
+ios/App/Podfile.lock
+xcuserdata/
+
+# ===== Editor / IDE =====
+.vscode/*
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.iml
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ===== Local Claude config =====
+.claude/settings.local.json
