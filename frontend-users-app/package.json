@@ -5,6 +5,7 @@
   "description": "FitZone mobile app (Capacitor shell wrapping the frontend-users web build)",
   "type": "module",
   "scripts": {
+    "dev": "npm --prefix ../frontend-users run dev",
     "copy:web": "node scripts/copy-web.mjs",
     "build:web": "npm --prefix ../frontend-users install && npm --prefix ../frontend-users run build",
     "build": "npm run build:web && npm run copy:web && cap sync",

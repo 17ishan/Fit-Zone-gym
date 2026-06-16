@@ -35,6 +35,14 @@ spring:
 
 server:
   port: ${PORT:8080}
+  shutdown: graceful
+  compression:
+    enabled: true
+    mime-types: application/json,text/css,text/html,application/javascript
+  error:
+    # Never leak internals to clients; errors are shaped by GlobalExceptionHandler.
+    include-stacktrace: never
+    include-message: never
 
 management:
   endpoints:
