@@ -10,6 +10,8 @@ import { Panel, PageHeader, StatusBadge, Spinner, EmptyState, ErrorState } from 
 import CustomerDetailsModal from "@/components/CustomerDetailsModal";
 import type { CustomerData } from "@/components/CustomerDetailsModal";
 import PaymentFlowModal from "@/components/PaymentFlowModal";
+import { fireConfetti } from "@/lib/confetti";
+import { usePrefersReducedMotion } from "@/hooks/useInteractivityEnabled";
 
 function pickActive(list: MembershipResponse[]): MembershipResponse | null {
   const active = list
@@ -24,6 +26,7 @@ function planPrice(p: PlanResponse): string {
 
 export default function MembershipPage() {
   const { user } = useAuth();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [memberships, setMemberships] = useState<MembershipResponse[]>([]);
   const [plans, setPlans] = useState<PlanResponse[]>([]);
   const [loading, setLoading] = useState(true);
@@ -69,6 +72,7 @@ export default function MembershipPage() {
       await createMembershipPurchase({ planId: selectedPlan.id, customerData });
       setMessage(`🎉 "${selectedPlan.name}" activated. Welcome aboard!`);
       closeModals();
+      if (!prefersReducedMotion) fireConfetti();
       load();
     } catch (err) {
       setMessage(err instanceof Error ? `❌ ${err.message}` : "❌ Purchase failed.");

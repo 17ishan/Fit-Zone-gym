@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Dumbbell } from "lucide-react";
 import { useAuth } from "@/auth/AuthContext";
 import { renderGoogleButton } from "@/lib/google";
@@ -7,12 +7,20 @@ import PasswordInput from "./PasswordInput";
 
 type Mode = "signin" | "register" | "forgot";
 
+/** Only allow same-app relative redirects (guards against open-redirects). */
+function safeRedirect(value: string | null): string {
+  if (value && value.startsWith("/") && !value.startsWith("//")) return value;
+  return "/dashboard";
+}
+
 const inputClass =
   "w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2.5 text-white placeholder-zinc-500 outline-none transition focus:border-[#FF0000]/60 focus:ring-1 focus:ring-[#FF0000]/40";
 
 export default function LoginPage() {
   const { user, loading, loginWithGoogle, login, register, forgotPassword } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = safeRedirect(searchParams.get("redirect"));
   const googleRef = useRef<HTMLDivElement>(null);
 
   const [mode, setMode] = useState<Mode>("signin");
@@ -26,8 +34,8 @@ export default function LoginPage() {
 
   // Redirect away once authenticated.
   useEffect(() => {
-    if (!loading && user) navigate("/dashboard", { replace: true });
-  }, [user, loading, navigate]);
+    if (!loading && user) navigate(redirectTo, { replace: true });
+  }, [user, loading, navigate, redirectTo]);
 
   // Render the Google button (sign-in / register modes only).
   useEffect(() => {
@@ -39,12 +47,12 @@ export default function LoginPage() {
       setError(null);
       try {
         await loginWithGoogle(idToken);
-        navigate("/dashboard", { replace: true });
+        navigate(redirectTo, { replace: true });
       } catch (e) {
         setError(e instanceof Error ? e.message : "Google sign-in failed");
       }
     }).catch((e) => setError(e instanceof Error ? e.message : "Google sign-in unavailable"));
-  }, [mode, loginWithGoogle, navigate]);
+  }, [mode, loginWithGoogle, navigate, redirectTo]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -54,10 +62,10 @@ export default function LoginPage() {
     try {
       if (mode === "signin") {
         await login(identifier, password);
-        navigate("/dashboard", { replace: true });
+        navigate(redirectTo, { replace: true });
       } else if (mode === "register") {
         await register(name, email, password);
-        navigate("/dashboard", { replace: true });
+        navigate(redirectTo, { replace: true });
       } else {
         const msg = await forgotPassword(email);
         setInfo(msg);

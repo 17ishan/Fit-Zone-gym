@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import GooeyNav from "./GooeyNav";
 import AuthButton from "./AuthButton";
 import { MagneticButton } from "./ui/magnetic-button";
+import { useJoinFlow } from "@/hooks/useJoinFlow";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -17,6 +18,7 @@ const navItems = [
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const handleJoin = useJoinFlow();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -61,7 +63,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-3">
           <AuthButton />
           <MagneticButton
-            onClick={() => navigate("/join")}
+            onClick={handleJoin}
             className="rounded-full bg-[#FF0000] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#AF0404]"
           >
             Join Now
@@ -100,7 +102,7 @@ const Navbar = () => {
               ))}
               <button
                 onClick={() => {
-                  navigate("/join");
+                  handleJoin();
                   setIsOpen(false);
                 }}
                 className="mt-2 w-full rounded-lg bg-[#FF0000] py-2.5 font-semibold text-white transition hover:bg-[#AF0404]"

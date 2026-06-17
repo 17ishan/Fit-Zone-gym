@@ -1,6 +1,7 @@
 import { Star, Users, Zap, ChevronDown, Dumbbell } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { useJoinFlow } from "@/hooks/useJoinFlow";
 import { MorphingText } from "./magicui/morphing-text";
 import { InteractiveHoverButton } from "./magicui/interactive-hover-button";
 import { BlurFade } from "./magicui/blur-fade";
@@ -20,6 +21,7 @@ const stats = [
 
 const HeroSection = () => {
   const navigate = useNavigate();
+  const handleJoin = useJoinFlow();
 
   // 🔹 Interactive parallax — background image drifts opposite the cursor
   const mouseX = useMotionValue(0);
@@ -106,7 +108,7 @@ const HeroSection = () => {
         <BlurFade delay={0.55}>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-6">
             <InteractiveHoverButton
-              onClick={() => navigate("/join")}
+              onClick={handleJoin}
               className="bg-[#FF0000] text-white border-none hover:bg-[#AF0404]"
             >
               Join Now

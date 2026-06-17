@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 import { CheckCircle2, Star, Zap, Crown, Trophy } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import CustomerDetailsModal from "./CustomerDetailsModal";
-import type { CustomerData } from "./CustomerDetailsModal";
-import PaymentFlowModal from "./PaymentFlowModal";
-import { createMembershipPurchase, getPlans } from "@/services/membership.service";
+import { getPlans } from "@/services/membership.service";
 import { useAuth } from "@/auth/AuthContext";
+import { useJoinFlow } from "@/hooks/useJoinFlow";
 import { BlurFade } from "./magicui/blur-fade";
 import { BorderBeam } from "./magicui/border-beam";
 import GradientText from "./reactbits/GradientText";
 import { TiltCard } from "./ui/tilt-card";
 import { MagneticButton } from "./ui/magnetic-button";
-import { fireConfetti } from "@/lib/confetti";
-import { usePrefersReducedMotion } from "@/hooks/useInteractivityEnabled";
 
 interface DisplayPlan {
   id: number; // -1 for offline fallback (purchase disabled)
@@ -41,14 +37,8 @@ function formatPrice(priceMinor: number, durationMonths: number): string {
 
 export default function MembershipSection() {
   const { user } = useAuth();
-  const prefersReducedMotion = usePrefersReducedMotion();
+  const handleJoin = useJoinFlow();
   const [plans, setPlans] = useState<DisplayPlan[]>(FALLBACK_PLANS);
-  const [message, setMessage] = useState<string | null>(null);
-  const [showCustomerModal, setShowCustomerModal] = useState(false);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [selectedPlanIndex, setSelectedPlanIndex] = useState<number | null>(null);
-  const [customerData, setCustomerData] = useState<CustomerData | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     getPlans()
@@ -70,61 +60,6 @@ export default function MembershipSection() {
         /* keep fallback plans */
       });
   }, []);
-
-  function handleJoin(idx: number) {
-    setSelectedPlanIndex(idx);
-    setShowCustomerModal(true);
-    setMessage(null);
-  }
-
-  function handleCustomerSubmit(data: CustomerData) {
-    setCustomerData(data);
-    setShowCustomerModal(false);
-    setShowPaymentModal(true);
-  }
-
-  async function handlePurchase() {
-    if (selectedPlanIndex === null || !customerData) return;
-    const plan = plans[selectedPlanIndex];
-
-    if (!user) {
-      setShowPaymentModal(false);
-      setMessage("🔒 Please sign in with Google (top-right) to complete your purchase.");
-      setTimeout(() => setMessage(null), 8000);
-      return;
-    }
-    if (plan.id < 0) {
-      setShowPaymentModal(false);
-      setMessage("⚠️ Plans are temporarily unavailable. Please try again shortly.");
-      setTimeout(() => setMessage(null), 8000);
-      return;
-    }
-
-    setIsProcessing(true);
-    setMessage(null);
-    try {
-      await createMembershipPurchase({ planId: plan.id, customerData });
-      setMessage(`🎉 Success! Membership "${plan.title}" purchased for ${customerData.name}.`);
-      setShowPaymentModal(false);
-      setSelectedPlanIndex(null);
-      setCustomerData(null);
-      if (!prefersReducedMotion) fireConfetti();
-    } catch (err) {
-      console.error(err);
-      setMessage(err instanceof Error ? `❌ Error: ${err.message}` : "❌ Failed to complete purchase.");
-      setShowPaymentModal(false);
-    } finally {
-      setIsProcessing(false);
-      setTimeout(() => setMessage(null), 8000);
-    }
-  }
-
-  function handleCloseModals() {
-    setShowCustomerModal(false);
-    setShowPaymentModal(false);
-    setSelectedPlanIndex(null);
-    setCustomerData(null);
-  }
 
   return (
     <section className="bg-black text-[#FFFADC] py-24 px-6 font-serif" id="membership">
@@ -186,7 +121,7 @@ export default function MembershipSection() {
                     </ul>
 
                     <MagneticButton
-                      onClick={() => handleJoin(idx)}
+                      onClick={handleJoin}
                       className="mt-auto w-full rounded-xl bg-[#FF0000] py-2.5 font-semibold text-white transition hover:bg-[#AF0404]"
                     >
                       Join {plan.title}
@@ -198,30 +133,12 @@ export default function MembershipSection() {
           })}
         </div>
 
-        {message && <div className="mt-8 text-center text-sm text-green-400">{message}</div>}
+        {!user && (
+          <p className="mt-8 text-center text-sm text-gray-500">
+            🔒 Sign in or create an account to purchase a membership.
+          </p>
+        )}
       </div>
-
-      {selectedPlanIndex !== null && (
-        <CustomerDetailsModal
-          isOpen={showCustomerModal}
-          onClose={handleCloseModals}
-          onSubmit={handleCustomerSubmit}
-          planName={plans[selectedPlanIndex].title}
-          planPrice={plans[selectedPlanIndex].price}
-        />
-      )}
-
-      {selectedPlanIndex !== null && customerData && (
-        <PaymentFlowModal
-          isOpen={showPaymentModal}
-          onClose={handleCloseModals}
-          onPurchase={handlePurchase}
-          planName={plans[selectedPlanIndex].title}
-          planPrice={plans[selectedPlanIndex].price}
-          customerName={customerData.name}
-          isProcessing={isProcessing}
-        />
-      )}
     </section>
   );
 }
