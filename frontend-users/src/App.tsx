@@ -5,6 +5,7 @@ import NavbarWrapper from "@/components/NavbarWrapper";
 import { LazyLoadingSection } from '@/components/LoadingSpinner';
 import { AuthProvider } from "@/auth/AuthContext";
 import { ProtectedRoute } from "@/auth/ProtectedRoute";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 // Lazy load components
 const HeroSection = lazy(() => import("@/components/HeroSection"));
@@ -36,6 +37,7 @@ function App() {
     <AuthProvider>
     <Router >
       <div className="relative z-0 min-h-screen font-serif ">
+        <ScrollProgress />
         <NavbarWrapper />
         <Routes>
           {/* Home */}
@@ -44,62 +46,62 @@ function App() {
             element={
               <>
                 {/* Hero Section */}
-                <div id='home'>
+                <div id='home' className="scroll-mt-20">
                   <LazyLoadingSection>
                     <HeroSection />
                   </LazyLoadingSection>
                 </div>
 
                 {/* Service Section */}
-                <div id='service'>
+                <div id='service' className="scroll-mt-20">
                   <LazyLoadingSection>
                     <ServiceSection />
                   </LazyLoadingSection>
                 </div>
 
-                <div>
+                <div className="scroll-mt-20">
                   <LazyLoadingSection>
-                    <BMIcalculator/> 
+                    <BMIcalculator/>
                   </LazyLoadingSection>
                 </div>
 
                 {/* About Section */}
-                <div id='about'>
+                <div id='about' className="scroll-mt-20">
                   <LazyLoadingSection>
                     <AboutSection />
                   </LazyLoadingSection>
                 </div>
 
                 {/* Membership Section */}
-                <div id='membership'>
+                <div id='membership' className="scroll-mt-20">
                   <LazyLoadingSection>
                     <MembershipSection />
                   </LazyLoadingSection>
                 </div>
 
                 {/* Gallery Section */}
-                <div id='gallery'>
+                <div id='gallery' className="scroll-mt-20">
                   <LazyLoadingSection>
                     <GallerySection />
                   </LazyLoadingSection>
                 </div>
-                
+
                 {/* Contact Section */}
-                <div id='contact'>
+                <div id='contact' className="scroll-mt-20">
                   <LazyLoadingSection>
                     <ContactSection />
                   </LazyLoadingSection>
                 </div>
 
                 {/* AI Chat Section */}
-                <div id="aichat">
+                <div id="aichat" className="scroll-mt-20">
                   <LazyLoadingSection>
                     <AIChat/>
                   </LazyLoadingSection>
                 </div>
 
                 {/* Footer section */}
-                <div id="footer">
+                <div id="footer" className="scroll-mt-20">
                   <LazyLoadingSection>
                     <Footer/>
                   </LazyLoadingSection>

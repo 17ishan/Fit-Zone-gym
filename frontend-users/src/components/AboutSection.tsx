@@ -1,8 +1,11 @@
+import { useRef } from "react";
 import { CheckCircle2, Trophy, Users, Dumbbell, HeartPulse } from "lucide-react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { BlurFade } from "./magicui/blur-fade";
 import { BorderBeam } from "./magicui/border-beam";
 import { NumberTicker } from "./magicui/number-ticker";
 import GradientText from "./reactbits/GradientText";
+import { useInteractivityEnabled } from "@/hooks/useInteractivityEnabled";
 
 const highlights = [
   "World-class equipment & facilities",
@@ -19,16 +22,28 @@ const stats = [
 ];
 
 const AboutSection = () => {
+  const interactive = useInteractivityEnabled();
+  const imageWrapRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: imageWrapRef,
+    offset: ["start end", "end start"],
+  });
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+
   return (
     <section className="bg-[#0a0a0a] text-[#FFFADC] py-24 px-6 font-serif" id="about">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Image */}
           <BlurFade>
-            <div className="relative overflow-hidden rounded-3xl border border-white/10">
-              <img
+            <div
+              ref={imageWrapRef}
+              className="relative overflow-hidden rounded-3xl border border-white/10"
+            >
+              <motion.img
                 src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1200"
                 alt="Inside FitZone gym"
+                style={interactive ? { y: imageY, scale: 1.12 } : undefined}
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

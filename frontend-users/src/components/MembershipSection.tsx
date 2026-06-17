@@ -9,6 +9,10 @@ import { useAuth } from "@/auth/AuthContext";
 import { BlurFade } from "./magicui/blur-fade";
 import { BorderBeam } from "./magicui/border-beam";
 import GradientText from "./reactbits/GradientText";
+import { TiltCard } from "./ui/tilt-card";
+import { MagneticButton } from "./ui/magnetic-button";
+import { fireConfetti } from "@/lib/confetti";
+import { usePrefersReducedMotion } from "@/hooks/useInteractivityEnabled";
 
 interface DisplayPlan {
   id: number; // -1 for offline fallback (purchase disabled)
@@ -37,6 +41,7 @@ function formatPrice(priceMinor: number, durationMonths: number): string {
 
 export default function MembershipSection() {
   const { user } = useAuth();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [plans, setPlans] = useState<DisplayPlan[]>(FALLBACK_PLANS);
   const [message, setMessage] = useState<string | null>(null);
   const [showCustomerModal, setShowCustomerModal] = useState(false);
@@ -103,6 +108,7 @@ export default function MembershipSection() {
       setShowPaymentModal(false);
       setSelectedPlanIndex(null);
       setCustomerData(null);
+      if (!prefersReducedMotion) fireConfetti();
     } catch (err) {
       console.error(err);
       setMessage(err instanceof Error ? `❌ Error: ${err.message}` : "❌ Failed to complete purchase.");
@@ -142,45 +148,51 @@ export default function MembershipSection() {
             const Icon = plan.icon;
             return (
               <BlurFade key={`${plan.title}-${idx}`} delay={idx * 0.1} className="h-full">
-                <div
-                  className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-[#111] p-7 transition-transform duration-300 ${
-                    plan.popular
-                      ? "border-[#FF0000]/60 shadow-2xl shadow-[#FF0000]/20 lg:-translate-y-3 lg:scale-[1.03]"
-                      : "border-gray-800 hover:border-[#FF0000]/50 hover:-translate-y-1"
-                  }`}
+                <TiltCard
+                  glare={!plan.popular}
+                  max={plan.popular ? 5 : 8}
+                  className="h-full rounded-2xl"
                 >
-                  {plan.popular && (
-                    <>
-                      <BorderBeam size={140} duration={8} />
-                      <span className="absolute top-0 right-0 rounded-bl-lg bg-[#FF0000] px-3 py-1 text-xs font-semibold text-white">
-                        Popular
-                      </span>
-                    </>
-                  )}
-
-                  <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FF0000]/10 ring-1 ring-[#FF0000]/30">
-                    <Icon className="h-6 w-6 text-[#FF0000]" />
-                  </div>
-
-                  <h3 className="text-xl font-bold mb-1">{plan.title}</h3>
-                  <div className="text-2xl font-extrabold text-[#FF0000] mb-5">{plan.price}</div>
-
-                  <ul className="space-y-2.5 mb-7 text-sm">
-                    {plan.features.map((f, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#FF0000]" />
-                        <span className="text-gray-200">{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button
-                    onClick={() => handleJoin(idx)}
-                    className="mt-auto w-full rounded-xl bg-[#FF0000] py-2.5 font-semibold text-white transition hover:bg-[#AF0404]"
+                  <div
+                    className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-[#111] p-7 transition-transform duration-300 ${
+                      plan.popular
+                        ? "border-[#FF0000]/60 shadow-2xl shadow-[#FF0000]/20 lg:-translate-y-3 lg:scale-[1.03]"
+                        : "border-gray-800 hover:border-[#FF0000]/50 hover:-translate-y-1"
+                    }`}
                   >
-                    Join {plan.title}
-                  </button>
-                </div>
+                    {plan.popular && (
+                      <>
+                        <BorderBeam size={140} duration={8} />
+                        <span className="absolute top-0 right-0 rounded-bl-lg bg-[#FF0000] px-3 py-1 text-xs font-semibold text-white">
+                          Popular
+                        </span>
+                      </>
+                    )}
+
+                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FF0000]/10 ring-1 ring-[#FF0000]/30">
+                      <Icon className="h-6 w-6 text-[#FF0000]" />
+                    </div>
+
+                    <h3 className="text-xl font-bold mb-1">{plan.title}</h3>
+                    <div className="text-2xl font-extrabold text-[#FF0000] mb-5">{plan.price}</div>
+
+                    <ul className="space-y-2.5 mb-7 text-sm">
+                      {plan.features.map((f, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#FF0000]" />
+                          <span className="text-gray-200">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <MagneticButton
+                      onClick={() => handleJoin(idx)}
+                      className="mt-auto w-full rounded-xl bg-[#FF0000] py-2.5 font-semibold text-white transition hover:bg-[#AF0404]"
+                    >
+                      Join {plan.title}
+                    </MagneticButton>
+                  </div>
+                </TiltCard>
               </BlurFade>
             );
           })}

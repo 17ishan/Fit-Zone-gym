@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { BlurFade } from "./magicui/blur-fade";
 
 const galleryImages = [
@@ -35,6 +35,7 @@ const GallerySection = () => {
               className={`group relative overflow-hidden rounded-2xl border border-white/10 shadow-lg ${item.span}`}
               initial={{ opacity: 0, scale: 0.92 }}
               whileInView={{ opacity: 1, scale: 1 }}
+              whileHover={{ y: -4 }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
               viewport={{ once: true }}
             >

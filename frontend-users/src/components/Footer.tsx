@@ -9,7 +9,10 @@ import {
   Mail,
   ArrowUp,
 } from "lucide-react";
+import { motion } from "motion/react";
 import { DotPattern } from "./magicui/dot-pattern";
+import { BlurFade } from "./magicui/blur-fade";
+import { MagneticButton } from "./ui/magnetic-button";
 
 const quickLinks = [
   { label: "Home", href: "#home" },
@@ -35,7 +38,7 @@ const Footer = () => {
 
       <div className="relative max-w-6xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
         {/* Brand Info */}
-        <div className="md:col-span-1">
+        <BlurFade className="md:col-span-1">
           <h2 className="text-2xl font-bold text-white flex items-center gap-2">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#FF0000] text-white">
               <Dumbbell className="h-5 w-5" />
@@ -48,19 +51,21 @@ const Footer = () => {
           </p>
           <div className="mt-6 flex gap-3">
             {socials.map((Icon, i) => (
-              <a
+              <motion.a
                 key={i}
                 href="#"
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5 ring-1 ring-white/10 transition-all hover:bg-[#FF0000] hover:ring-[#FF0000]"
+                whileHover={{ y: -3, scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5 ring-1 ring-white/10 transition-colors hover:bg-[#FF0000] hover:ring-[#FF0000]"
               >
                 <Icon className="h-5 w-5" />
-              </a>
+              </motion.a>
             ))}
           </div>
-        </div>
+        </BlurFade>
 
         {/* Quick Links */}
-        <div>
+        <BlurFade delay={0.1}>
           <h3 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-4">
             Quick Links
           </h3>
@@ -76,10 +81,10 @@ const Footer = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </BlurFade>
 
         {/* Contact */}
-        <div>
+        <BlurFade delay={0.2}>
           <h3 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-4">
             Contact
           </h3>
@@ -94,10 +99,10 @@ const Footer = () => {
               <Mail className="h-5 w-5 shrink-0 text-[#FF0000]" /> support@fitzone.com
             </li>
           </ul>
-        </div>
+        </BlurFade>
 
         {/* Newsletter / CTA */}
-        <div>
+        <BlurFade delay={0.3}>
           <h3 className="text-xs font-bold uppercase tracking-widest text-white/50 mb-4">
             Stay Updated
           </h3>
@@ -110,26 +115,32 @@ const Footer = () => {
               placeholder="Your email"
               className="w-full rounded-lg border border-gray-700 bg-[#111] px-3 py-2 text-sm outline-none focus:border-[#FF0000]"
             />
-            <button className="rounded-lg bg-[#FF0000] px-4 text-sm font-semibold text-white transition hover:bg-[#AF0404]">
+            <MagneticButton
+              type="button"
+              className="rounded-lg bg-[#FF0000] px-4 text-sm font-semibold text-white transition hover:bg-[#AF0404]"
+            >
               Join
-            </button>
+            </MagneticButton>
           </div>
-        </div>
+        </BlurFade>
       </div>
 
       {/* Bottom note */}
-      <div className="relative flex flex-col items-center justify-between gap-3 border-t border-gray-800 px-6 py-6 text-center text-sm sm:flex-row max-w-6xl mx-auto">
-        <span>
-          © {new Date().getFullYear()} FitZone. All rights reserved. Built with ❤️ by Team
-          FitZone.
-        </span>
-        <a
-          href="#home"
-          className="inline-flex items-center gap-1 text-gray-400 transition hover:text-[#FF0000]"
-        >
-          Back to top <ArrowUp className="h-4 w-4" />
-        </a>
-      </div>
+      <BlurFade delay={0.4}>
+        <div className="relative flex flex-col items-center justify-between gap-3 border-t border-gray-800 px-6 py-6 text-center text-sm sm:flex-row max-w-6xl mx-auto">
+          <span>
+            © {new Date().getFullYear()} FitZone. All rights reserved. Built with ❤️ by Team
+            FitZone.
+          </span>
+          <motion.a
+            href="#home"
+            whileHover={{ y: -2 }}
+            className="inline-flex items-center gap-1 text-gray-400 transition-colors hover:text-[#FF0000]"
+          >
+            Back to top <ArrowUp className="h-4 w-4" />
+          </motion.a>
+        </div>
+      </BlurFade>
     </footer>
   );
 };

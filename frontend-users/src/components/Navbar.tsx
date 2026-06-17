@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import GooeyNav from "./GooeyNav";
 import AuthButton from "./AuthButton";
+import { MagneticButton } from "./ui/magnetic-button";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -59,12 +60,12 @@ const Navbar = () => {
         {/* Desktop CTA + Auth */}
         <div className="hidden md:flex items-center gap-3">
           <AuthButton />
-          <button
+          <MagneticButton
             onClick={() => navigate("/join")}
             className="rounded-full bg-[#FF0000] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#AF0404]"
           >
             Join Now
-          </button>
+          </MagneticButton>
         </div>
 
         {/* Mobile Menu Button */}

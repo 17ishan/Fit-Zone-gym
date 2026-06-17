@@ -217,3 +217,24 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+/* Smooth anchor-nav scrolling (Navbar / Footer / Hero "#service" links) */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Accessibility: stand down all motion when the user asks for it. Catches CSS
+   keyframes (meteor, marquee, shiny-text, BorderBeam, scroll cue) globally. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

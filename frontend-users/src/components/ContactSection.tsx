@@ -4,6 +4,10 @@ import { motion, AnimatePresence } from "motion/react";
 import { BlurFade } from "./magicui/blur-fade";
 import { BorderBeam } from "./magicui/border-beam";
 import GradientText from "./reactbits/GradientText";
+import { TiltCard } from "./ui/tilt-card";
+import { MagneticButton } from "./ui/magnetic-button";
+import { fireConfetti } from "@/lib/confetti";
+import { usePrefersReducedMotion } from "@/hooks/useInteractivityEnabled";
 import { submitContact } from "@/services/contact.service";
 
 const info = [
@@ -13,6 +17,7 @@ const info = [
 ];
 
 const ContactSection = () => {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,6 +37,7 @@ const ContactSection = () => {
       await submitContact(formData);
       setSent(true);
       setFormData({ name: "", email: "", message: "" });
+      if (!prefersReducedMotion) fireConfetti();
       setTimeout(() => setSent(false), 4000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to send message. Please try again.");
@@ -65,17 +71,19 @@ const ContactSection = () => {
           <div className="md:col-span-2 space-y-4">
             {info.map((item, i) => (
               <BlurFade key={item.label} delay={i * 0.1}>
-                <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#111] p-5 transition-colors hover:border-[#FF0000]/40">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FF0000]/10 ring-1 ring-[#FF0000]/30">
-                    <item.icon className="h-6 w-6 text-[#FF0000]" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-widest text-gray-500">
-                      {item.label}
+                <TiltCard max={5} className="rounded-2xl">
+                  <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-[#111] p-5 transition-colors hover:border-[#FF0000]/40">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FF0000]/10 ring-1 ring-[#FF0000]/30">
+                      <item.icon className="h-6 w-6 text-[#FF0000]" />
                     </div>
-                    <div className="font-medium">{item.value}</div>
+                    <div>
+                      <div className="text-xs font-semibold uppercase tracking-widest text-gray-500">
+                        {item.label}
+                      </div>
+                      <div className="font-medium">{item.value}</div>
+                    </div>
                   </div>
-                </div>
+                </TiltCard>
               </BlurFade>
             ))}
             <BlurFade delay={0.3}>
@@ -129,13 +137,13 @@ const ContactSection = () => {
                   className={inputClass}
                   required
                 />
-                <button
+                <MagneticButton
                   type="submit"
                   disabled={submitting}
                   className="inline-flex items-center gap-2 rounded-lg bg-[#FF0000] px-6 py-3 font-semibold text-white transition hover:bg-[#AF0404] disabled:opacity-60"
                 >
                   <Send className="h-4 w-4" /> {submitting ? "Sending…" : "Send Message"}
-                </button>
+                </MagneticButton>
 
                 {error && (
                   <div className="rounded-lg border border-[#FF0000]/30 bg-[#FF0000]/10 px-4 py-3 text-sm font-medium text-[#FF5757]">
