@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,6 +34,14 @@ public interface MembershipRepository extends JpaRepository<Membership, UUID> {
     Optional<Membership> findById(UUID id);
 
     long countByStatus(MembershipStatus status);
+
+    /** Memberships in a status whose endDate is exactly the given day (used by reminder/renewal jobs). */
+    @EntityGraph(attributePaths = {"user", "plan"})
+    List<Membership> findByStatusAndEndDate(MembershipStatus status, LocalDate endDate);
+
+    /** Memberships in a status that have already lapsed (used by the auto-expire job). */
+    @EntityGraph(attributePaths = {"user", "plan"})
+    List<Membership> findByStatusAndEndDateBefore(MembershipStatus status, LocalDate date);
 
     @Query("select m.planName as planName, count(m) as count from Membership m group by m.planName")
     List<PlanCount> countGroupByPlanName();

@@ -32,6 +32,10 @@ spring:
           auth: true
           starttls:
             enable: true
+          # Fail fast if the host blocks/throttles outbound SMTP, instead of hanging a mail thread.
+          connectiontimeout: ${MAIL_TIMEOUT_MS:10000}
+          timeout: ${MAIL_TIMEOUT_MS:10000}
+          writetimeout: ${MAIL_TIMEOUT_MS:10000}
 
 server:
   port: ${PORT:8080}
@@ -64,12 +68,25 @@ app:
     # Optional: password seeded for the bootstrap admin accounts so they can log in with email/password.
     bootstrap-password: ${ADMIN_BOOTSTRAP_PASSWORD:}
   mail:
-    # When false, password-reset links are written to the log instead of emailed (handy in dev).
+    # When false, all emails are written to the log instead of sent (handy in dev).
     enabled: ${MAIL_ENABLED:false}
     from: ${MAIL_FROM:FitZone <no-reply@fitzone.local>}
+    # Inbox that receives contact-form alerts. Defaults to MAIL_FROM's address when unset.
+    admin-inbox: ${MAIL_ADMIN_INBOX:}
   frontend:
     # Base URLs used to build the password-reset link in the email, per app.
     user-url: ${FRONTEND_USER_URL:http://localhost:5173}
     admin-url: ${FRONTEND_ADMIN_URL:http://localhost:5174}
+  notifications:
+    # Master switch for the scheduled email jobs (expiry reminder, auto-expire, renewal, payments).
+    enabled: ${NOTIFICATIONS_ENABLED:true}
+    reminder-days-before: ${NOTIFICATIONS_REMINDER_DAYS:7,1}
+    renewal-nudge-days-after: ${NOTIFICATIONS_RENEWAL_DAYS:3}
+    payment-follow-up-hours: ${NOTIFICATIONS_PAYMENT_HOURS:24}
+    # Daily cron schedules (server time). Override per job if needed.
+    expiry-cron: ${NOTIFICATIONS_EXPIRY_CRON:0 0 8 * * *}
+    expire-cron: ${NOTIFICATIONS_EXPIRE_CRON:0 10 8 * * *}
+    renewal-cron: ${NOTIFICATIONS_RENEWAL_CRON:0 20 8 * * *}
+    payment-cron: ${NOTIFICATIONS_PAYMENT_CRON:0 30 8 * * *}
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:5174}

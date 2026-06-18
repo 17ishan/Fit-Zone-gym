@@ -3,9 +3,11 @@ package com.fitzone.gym.service;
 import com.fitzone.gym.dto.UserUpdateRequest;
 import com.fitzone.gym.entity.Role;
 import com.fitzone.gym.entity.User;
+import com.fitzone.gym.event.UserRegisteredEvent;
 import com.fitzone.gym.exception.NotFoundException;
 import com.fitzone.gym.repository.UserRepository;
 import com.fitzone.gym.security.GoogleAccount;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,11 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository repo;
+    private final ApplicationEventPublisher events;
 
-    public UserService(UserRepository repo) {
+    public UserService(UserRepository repo, ApplicationEventPublisher events) {
         this.repo = repo;
+        this.events = events;
     }
 
     @Transactional
@@ -44,7 +48,10 @@ public class UserService {
                     u.setName(account.name() != null ? account.name() : account.email());
                     u.setGoogleSub(account.sub());
                     u.setRole(Role.USER);
-                    return repo.save(u);
+                    u = repo.save(u);
+                    // First-time Google sign-in → welcome email after commit.
+                    events.publishEvent(new UserRegisteredEvent(u));
+                    return u;
                 });
     }
 

@@ -7,6 +7,7 @@ import com.fitzone.gym.dto.AuthDtos.RegisterRequest;
 import com.fitzone.gym.dto.UserResponse;
 import com.fitzone.gym.entity.PasswordResetToken;
 import com.fitzone.gym.entity.User;
+import com.fitzone.gym.event.UserRegisteredEvent;
 import com.fitzone.gym.exception.BadRequestException;
 import com.fitzone.gym.exception.ForbiddenException;
 import com.fitzone.gym.exception.UnauthorizedException;
@@ -14,6 +15,7 @@ import com.fitzone.gym.repository.PasswordResetTokenRepository;
 import com.fitzone.gym.security.GoogleAccount;
 import com.fitzone.gym.security.GoogleTokenVerifier;
 import com.fitzone.gym.security.JwtService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,12 +42,14 @@ public class AuthService {
     private final PasswordResetTokenRepository resetTokenRepo;
     private final MailService mailService;
     private final AppProperties props;
+    private final ApplicationEventPublisher events;
     private final SecureRandom secureRandom = new SecureRandom();
 
     public AuthService(GoogleTokenVerifier verifier, JwtService jwtService,
                        UserService userService, AllowlistService allowlistService,
                        PasswordEncoder passwordEncoder, PasswordResetTokenRepository resetTokenRepo,
-                       MailService mailService, AppProperties props) {
+                       MailService mailService, AppProperties props,
+                       ApplicationEventPublisher events) {
         this.verifier = verifier;
         this.jwtService = jwtService;
         this.userService = userService;
@@ -54,6 +58,7 @@ public class AuthService {
         this.resetTokenRepo = resetTokenRepo;
         this.mailService = mailService;
         this.props = props;
+        this.events = events;
     }
 
     // ---- Google ----
@@ -84,6 +89,7 @@ public class AuthService {
             throw new BadRequestException("An account with this email already exists");
         }
         User user = userService.registerLocal(req.name(), req.email(), passwordEncoder.encode(req.password()));
+        events.publishEvent(new UserRegisteredEvent(user));
         return tokenResponse(user);
     }
 
