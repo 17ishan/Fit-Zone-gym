@@ -3,10 +3,12 @@ package com.fitzone.gym.service;
 import com.fitzone.gym.dto.MembershipDtos.AdminMembershipRequest;
 import com.fitzone.gym.dto.MembershipDtos.PurchaseRequest;
 import com.fitzone.gym.entity.*;
+import com.fitzone.gym.event.MembershipPurchasedEvent;
 import com.fitzone.gym.exception.NotFoundException;
 import com.fitzone.gym.repository.MembershipRepository;
 import com.fitzone.gym.repository.PaymentRepository;
 import com.fitzone.gym.repository.UserRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,13 +25,16 @@ public class MembershipService {
     private final PaymentRepository paymentRepo;
     private final UserRepository userRepo;
     private final PlanService planService;
+    private final ApplicationEventPublisher events;
 
     public MembershipService(MembershipRepository membershipRepo, PaymentRepository paymentRepo,
-                             UserRepository userRepo, PlanService planService) {
+                             UserRepository userRepo, PlanService planService,
+                             ApplicationEventPublisher events) {
         this.membershipRepo = membershipRepo;
         this.paymentRepo = paymentRepo;
         this.userRepo = userRepo;
         this.planService = planService;
+        this.events = events;
     }
 
     /**
@@ -72,6 +77,9 @@ public class MembershipService {
         payment.setMethod(req.paymentMethod() != null ? req.paymentMethod() : "demo");
         payment.setProviderPaymentId("demo_" + System.currentTimeMillis());
         paymentRepo.save(payment);
+
+        // Confirmation + invoice emails are sent after this transaction commits.
+        events.publishEvent(new MembershipPurchasedEvent(user, m, payment));
 
         return m;
     }
