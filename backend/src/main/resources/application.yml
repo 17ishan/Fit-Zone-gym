@@ -53,6 +53,11 @@ management:
     web:
       exposure:
         include: health
+  health:
+    # Mail is not a critical dependency for liveness. Excluding it keeps /actuator/health
+    # UP even when SMTP is unconfigured/unreachable (otherwise the deploy healthcheck fails).
+    mail:
+      enabled: false
 
 app:
   jwt:
